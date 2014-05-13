@@ -1,11 +1,13 @@
 <?php
 
-include("../pchart2/class/pData.class.php");
-include("../pchart2/class/pDraw.class.php");
-include("../pchart2/class/pImage.class.php");
-include("../pchart2/class/pRadar.class.php");
-include("../phpmailer/class.phpmailer.php");
-include("../tcpdf/tcpdf.php");
+include("inc/pchart2/class/pData.class.php");
+include("inc/pchart2/class/pDraw.class.php");
+include("inc/pchart2/class/pImage.class.php");
+include("inc/pchart2/class/pRadar.class.php");
+include("inc/phpmailer/class.phpmailer.php");
+include("inc/tcpdf/tcpdf.php");
+
+include("limeReportPdf.class.php");
 
 class limeReport{
     private $graphsDir;
@@ -34,7 +36,7 @@ class limeReport{
     public $tables;
 
     function limeReport(){
-//        $this->limeReportPdf = new limeReportPdf(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+        $this->limeReportPdf = new limeReportPdf(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
     }
 
     function setLeftLogo($logo){
@@ -205,7 +207,7 @@ class limeReport{
         $this->mysqli->close();
         return ($this->data);
     }
-
+/*
     function renderTable($tableId) {
         if (array_key_exists('thead',$this->tables[$tableId])){
             if (array_key_exists('cells',$this->tables[$tableId]['thead'])){
@@ -253,7 +255,7 @@ class limeReport{
             PHP_EOL
         );
         return $output;
-    }
+    }*/
 
     function defineChart($chartId,$data,$type='bar',$width=600,$height=400){
         $labels=array();
@@ -311,7 +313,8 @@ class limeReport{
     }
 
     function renderChart($chartId){
-        $img = $this->renderElement('img','',array('src'=>$this->graphsPath . "/" . $this->id . "-" . $chartId . "-graph.png"));
+        $element = new element;
+        $img = $element->render('img','',array('src'=>$this->graphsPath . "/" . $this->id . "-" . $chartId . "-graph.png"));
         return $img;
     }
 
